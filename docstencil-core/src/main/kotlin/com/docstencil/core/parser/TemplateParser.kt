@@ -197,12 +197,24 @@ class TemplateParser {
         }
 
         private fun nullCoalescing(): Expr {
-            val expr = or()
+            val expr = pipe()
 
             if (match(TemplateTokenType.QUESTION_QUESTION)) {
                 val operator = previous()
                 val right = nullCoalescing()
                 return LogicalExpr(expr, operator, right)
+            }
+
+            return expr
+        }
+
+        private fun pipe(): Expr {
+            var expr = or()
+
+            while (match(TemplateTokenType.PIPE)) {
+                val operator = previous()
+                val right = or()
+                expr = PipeExpr(expr, operator, right)
             }
 
             return expr
@@ -233,24 +245,12 @@ class TemplateParser {
         }
 
         private fun equality(): Expr {
-            var expr = pipe()
+            var expr = comparison()
 
             while (match(TemplateTokenType.BANG_EQUAL, TemplateTokenType.EQUAL_EQUAL)) {
                 val operator = previous()
-                val right = pipe()
-                expr = BinaryExpr(expr, operator, right)
-            }
-
-            return expr
-        }
-
-        private fun pipe(): Expr {
-            var expr = comparison()
-
-            while (match(TemplateTokenType.PIPE)) {
-                val operator = previous()
                 val right = comparison()
-                expr = PipeExpr(expr, operator, right)
+                expr = BinaryExpr(expr, operator, right)
             }
 
             return expr
