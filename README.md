@@ -52,7 +52,7 @@ Templates can be edited by anyone familiar with Word — no programming knowledg
 <dependency>
     <groupId>com.docstencil</groupId>
     <artifactId>docstencil-core</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -62,7 +62,7 @@ Templates can be edited by anyone familiar with Word — no programming knowledg
 <summary><b>Gradle (Kotlin)</b></summary>
 
 ```kotlin
-implementation("com.docstencil:docstencil-core:0.1.2")
+implementation("com.docstencil:docstencil-core:0.1.3")
 ```
 
 </details>
@@ -71,7 +71,7 @@ implementation("com.docstencil:docstencil-core:0.1.2")
 <summary><b>Gradle (Groovy)</b></summary>
 
 ```groovy
-implementation 'com.docstencil:docstencil-core:0.1.2'
+implementation 'com.docstencil:docstencil-core:0.1.3'
 ```
 
 </details>
