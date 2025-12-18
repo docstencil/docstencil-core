@@ -66,6 +66,15 @@ Reduce a collection to a single value:
 {items | $reduce((total, item) => total + item.price, 0)}
 ```
 
+### $sum
+
+Sum up numbers:
+
+```
+{$sum(numbers)}
+{items | $sum()}
+```
+
 ### $filterNotNull
 
 Remove null values from a collection:
