@@ -1,0 +1,270 @@
+---
+sidebar_position: 3
+slug: /real-world-example
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Real-World Example
+
+This page walks through a complete invoice template that demonstrates many of DocStencil's features.
+
+## The Scenario
+
+A freelancer needs to generate invoices for clients. Each invoice includes:
+- Freelancer and customer addresses
+- Multiple line items in a table
+- Automatic calculation of subtotal, VAT, and total
+- Formatted dates
+
+## The Template
+
+**[Download the template (Invoice_Template.docx)](/examples/Invoice_Template.docx)**
+
+## Features Demonstrated
+
+This template showcases several advanced DocStencil features:
+
+### Nested Property Access
+Access deeply nested data using dot notation:
+```
+{invoice.freelancer.address.street}
+```
+
+### Variable Declarations
+Store calculated values for reuse with `var`:
+```
+{var totalHours = invoice.positions | $map((p) => p.hours) | $sum()}
+```
+Variable declarations will not leave empty lines after being evaluated.
+
+### Pipe Operations
+Chain multiple functions together using the pipe operator `|`:
+```
+{invoice.serviceName | $lowercase()}
+{total | $format("0")}
+```
+The pipe operator adds the expression on the left side of the pipe as the first argument to the function call on the right.
+
+### Lambda Expressions
+Use arrow functions for simple data transformations:
+```
+{invoice.positions | $map((p) => p.hours * p.rate) | $sum()}
+```
+
+### Case Expressions
+Handle conditional logic inline:
+```
+{case when invoice.vatPercent != null then totalWithoutTax * invoice.vatPercent / 100.0 else 0 end}
+```
+
+### Date Formatting
+Format dates using Java's DateTimeFormatter patterns:
+```
+{invoice.date | $format("MMMM d yyyy")}
+```
+
+### For Loops in Tables
+Repeat table rows for each item in a list:
+```
+{for pos in invoice.positions}...{end}
+```
+
+## The Data
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+import com.docstencil.core.api.OfficeTemplate
+import java.time.LocalDate
+
+// Data classes
+data class InvoiceAddress(
+    val street: String,
+    val streetNumber: String,
+    val zipCode: String,
+    val city: String,
+    val country: String,
+)
+
+data class InvoicePerson(
+    val name: String,
+    val address: InvoiceAddress,
+    val uid: String,
+    val companyRegistrationNumber: String,
+    val iban: String,
+)
+
+data class InvoicePosition(
+    val name: String,
+    val hours: Int,
+    val rate: Int,
+)
+
+data class Invoice(
+    val id: String,
+    val serviceName: String,
+    val freelancer: InvoicePerson,
+    val customer: InvoicePerson,
+    val positions: List<InvoicePosition>,
+    val date: LocalDate,
+    val serviceFrom: LocalDate,
+    val serviceTo: LocalDate,
+    val vatPercent: Int,
+)
+
+fun main() {
+    val template = OfficeTemplate.fromFile("Invoice_Template.docx")
+
+    val data = mapOf(
+        "invoice" to Invoice(
+            id = "20250815",
+            serviceName = "Development services",
+            freelancer = InvoicePerson(
+                name = "Fred Freelancer",
+                address = InvoiceAddress(
+                    street = "Stubenring",
+                    streetNumber = "1",
+                    zipCode = "1234",
+                    city = "Vienna",
+                    country = "Austria",
+                ),
+                uid = "ATU12345678",
+                companyRegistrationNumber = "FN 123456",
+                iban = "AT123400000012345678",
+            ),
+            customer = InvoicePerson(
+                name = "Big Corp Ltd.",
+                address = InvoiceAddress(
+                    street = "Tauentzienstraße",
+                    streetNumber = "42",
+                    zipCode = "54321",
+                    city = "Berlin",
+                    country = "Germany",
+                ),
+                uid = "DEU123456789",
+                companyRegistrationNumber = "HR 1234567",
+                iban = "DE123400000012345678",
+            ),
+            positions = listOf(
+                InvoicePosition("Consulting", 10, 100),
+                InvoicePosition("Development", 50, 120),
+            ),
+            date = LocalDate.of(2025, 8, 15),
+            serviceFrom = LocalDate.of(2025, 7, 19),
+            serviceTo = LocalDate.of(2025, 6, 16),
+            vatPercent = 20,
+        ),
+    )
+
+    val result = template.render(data)
+    result.writeToFile("Invoice_Output.docx")
+}
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+import com.docstencil.core.api.OfficeTemplate;
+import com.docstencil.core.api.OfficeTemplateResult;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+public class InvoiceExample {
+    // Records for invoice data
+    public record InvoiceAddress(
+        String street,
+        String streetNumber,
+        String zipCode,
+        String city,
+        String country
+    ) {}
+
+    public record InvoicePerson(
+        String name,
+        InvoiceAddress address,
+        String uid,
+        String companyRegistrationNumber,
+        String iban
+    ) {}
+
+    public record InvoicePosition(
+        String name,
+        int hours,
+        int rate
+    ) {}
+
+    public record Invoice(
+        String id,
+        String serviceName,
+        InvoicePerson freelancer,
+        InvoicePerson customer,
+        List<InvoicePosition> positions,
+        LocalDate date,
+        LocalDate serviceFrom,
+        LocalDate serviceTo,
+        int vatPercent
+    ) {}
+
+    public static void main(String[] args) throws Exception {
+        OfficeTemplate template = OfficeTemplate.fromFile("Invoice_Template.docx");
+
+        Map<String, Object> data = Map.of(
+            "invoice", new Invoice(
+                "20250815",
+                "Development services",
+                new InvoicePerson(
+                    "Fred Freelancer",
+                    new InvoiceAddress(
+                        "Stubenring",
+                        "1",
+                        "1234",
+                        "Vienna",
+                        "Austria"
+                    ),
+                    "ATU12345678",
+                    "FN 123456",
+                    "AT123400000012345678"
+                ),
+                new InvoicePerson(
+                    "Big Corp Ltd.",
+                    new InvoiceAddress(
+                        "Tauentzienstraße",
+                        "42",
+                        "54321",
+                        "Berlin",
+                        "Germany"
+                    ),
+                    "DEU123456789",
+                    "HR 1234567",
+                    "DE123400000012345678"
+                ),
+                List.of(
+                    new InvoicePosition("Consulting", 10, 100),
+                    new InvoicePosition("Development", 50, 120)
+                ),
+                LocalDate.of(2025, 8, 15),
+                LocalDate.of(2025, 7, 19),
+                LocalDate.of(2025, 6, 16),
+                20
+            )
+        );
+
+        OfficeTemplateResult result = template.render(data);
+        result.writeToFile("Invoice_Output.docx");
+    }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## The Output
+
+With the data above, DocStencil produces a fully rendered invoice with all calculations completed.
+
+**[Download the output (Invoice_Output.docx)](/examples/Invoice_Output.docx)**

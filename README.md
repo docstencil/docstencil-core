@@ -12,7 +12,7 @@
 
 <p align="center">
   <a href="https://docstencil.com/docs">Documentation</a> •
-  <a href="https://docstencil.com/docs/basics">Examples</a> •
+  <a href="https://docstencil.com/docs/real-world-example">Examples</a> •
   <a href="https://github.com/docstencil/docstencil-core/issues">Report Bug</a>
 </p>
 
