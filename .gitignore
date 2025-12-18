@@ -1,0 +1,12 @@
+examples
+*.iml
+.idea/*
+.kotlin/*
+.claude/*
+.gradle/*
+build/*
+CLAUDE.md
+TODO.md
+docstencil-core/build/*
+docstencil-core/.gradle/*
+docstencil-core/.kotlin/*

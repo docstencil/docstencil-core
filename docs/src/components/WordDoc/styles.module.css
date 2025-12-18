@@ -1,0 +1,107 @@
+.wordDoc {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin: 1rem 0 2rem;
+  overflow: hidden;
+}
+
+.header {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 6px 12px;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.filename {
+  font-size: 12px;
+  color: #666;
+}
+
+.downloadButton {
+  margin-left: auto;
+  color: #666;
+  text-decoration: none;
+  padding: 4px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.downloadButton:hover {
+  color: #242424;
+  background-color: rgb(224, 224, 224);
+}
+
+.downloadIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.content {
+  background-color: white;
+  color: #242424;
+  padding: 1rem;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.content :last-child {
+  margin-bottom: 0;
+}
+
+.content table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.content table thead tr {
+  text-align: left;
+  border-bottom: 0;
+}
+
+.content table td {
+  width: 100%;
+  background-color: white;
+}
+
+/* Dark mode */
+[data-theme='dark'] .wordDoc {
+  border-color: #374151;
+}
+
+[data-theme='dark'] .header {
+  background: #1f2937;
+  border-bottom-color: #374151;
+}
+
+[data-theme='dark'] .filename {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .downloadButton {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .downloadButton:hover {
+  color: #e2e8f0;
+  background-color: #374151;
+}
+
+[data-theme='dark'] .content {
+  background-color: rgb(40, 42, 54);
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .content table td {
+  background-color: rgb(40, 42, 54);
+}

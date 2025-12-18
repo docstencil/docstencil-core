@@ -1,0 +1,25 @@
+services:
+  docs:
+    build: .
+    restart: unless-stopped
+    expose:
+      - "3000"
+
+  nginx:
+    image: jonasal/nginx-certbot:6
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
+      - STAGING=${CERTBOT_STAGING}
+    volumes:
+      - ./nginx/user_conf.d:/etc/nginx/user_conf.d:ro
+      - letsencrypt:/etc/letsencrypt
+    depends_on:
+      - docs
+
+volumes:
+  letsencrypt:
+    driver: local

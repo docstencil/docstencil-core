@@ -1,0 +1,274 @@
+---
+sidebar_position: 2
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WordDoc from "@site/src/components/WordDoc";
+
+# Basics
+
+## Passing Data
+
+Pass your data to the template as a `Map<String, Object>`. You can use nested maps and classes in any combination:
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+import com.docstencil.core.api.OfficeTemplate
+
+data class Address(val street: String, val city: String)
+data class Person(val name: String, val address: Address)
+
+fun main() {
+    val template = OfficeTemplate.fromFile("Template.docx")
+
+    val data = mapOf(
+        "person" to Person(
+            name = "Alice",
+            address = Address(street = "123 Main St", city = "Springfield")
+        )
+    )
+    val result = template.render(data)
+
+    result.writeToFile("Output.docx")
+}
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+import com.docstencil.core.api.OfficeTemplate;
+import com.docstencil.core.api.OfficeTemplateResult;
+import java.util.Map;
+
+public class Main {
+    public record Address(String street, String city) {}
+    public record Person(String name, Address address) {}
+
+    public static void main(String[] args) throws Exception {
+        OfficeTemplate template = OfficeTemplate.fromFile("Template.docx");
+
+        Map<String, Object> data = Map.of(
+            "person", new Person(
+                "Alice",
+                new Address("123 Main St", "Springfield")
+            )
+        );
+        OfficeTemplateResult result = template.render(data);
+
+        result.writeToFile("Output.docx");
+    }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+### Property Access
+
+Use dot notation to access nested properties in your data:
+
+<WordDoc filename="Template.docx">
+{`{person.address.street}`}
+</WordDoc>
+
+DocStencil resolves properties uniformly regardless of how your data is structured. All of these work the same way:
+
+- **Maps**: `mapOf("person" to mapOf("address" to mapOf("street" to "123 Main St")))`
+- **Data classes**: A `Person` data class with an `address` property
+- **Java records**: A `Person` record with an `address()` accessor
+- **POJOs with getters**: A `Person` class with `getAddress()` returning an object with `getStreet()`
+
+## For Loops
+
+Use `{for ... in ...}...{end}` to repeat content for each item in an `Iterable`.
+
+<WordDoc filename="Template_Paragraphs.docx">
+  {`{for section in report.sections}`}
+  **{`{section.title}`}**
+  {`{section.text}`}<br/>
+  {`{end}`}
+</WordDoc>
+
+`for` loops also work in tables, where the loop repeats the entire table row:
+
+<WordDoc filename="Template_Table.docx">
+**Invoice #1234**
+
+| Description | Amount |
+|-------------|--------|
+| {`{for pos in invoice.positions}`}{`{pos.description}`} | {`{pos.amount}`}{`{end}`} |
+</WordDoc>
+
+## Conditionals
+
+Use `{if ...}...{end}` to show content only when a condition is true. You can use comparison operators (`==`, `!=`, `<`, `>`, `<=`, `>=`) and logical operators (`and`, `or`, `!`).
+
+<WordDoc filename="Template.docx">
+{`{if invoice.subtotal >= 100 and !user.registered}`}
+Use code COUPON10 to get 10% off your next order.
+{`{end}`}
+</WordDoc>
+
+`if` statements can also be used inside table rows to conditionally render rows the same way `for` loops can be used there.
+
+## Builtin Functions
+
+DocStencil provides several builtin helper functions. All builtin functions are prefixed with `$`.
+
+### Formatting Dates & Numbers
+
+Use `$format` to format dates using Java's [DateTimeFormatter patterns](https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html):
+
+<WordDoc filename="Template.docx">
+Invoice Date: {`{$format(invoice.date, "MMMM dd, yyyy")}`}
+</WordDoc>
+
+You can use the same `$format` function to format numbers using Java's [DecimalFormat patterns](https://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html):
+
+<WordDoc filename="Template.docx">
+Average: {`{$formatNumber(stats.average, "0.0")}`} points
+</WordDoc>
+
+Common patterns:
+- `"0.0"` — one decimal place (e.g., `3.1`)
+- `"0.00"` — two decimal places (e.g., `3.14`)
+- `"#,##0.00"` — thousands separator with two decimals (e.g., `1,234.56`)
+
+### Enumerating Items
+
+Use `$enumerate` to get index and position information while iterating. Each item is wrapped with the following properties:
+
+- `value` — the original item
+- `index` — zero-based position (0, 1, 2, ...)
+- `isFirst` / `isLast` — boolean flags for first and last items
+- `isEven` / `isOdd` — boolean flags based on index
+
+<WordDoc filename="Template.docx">
+**Invoice #1234**
+
+| # | Description | Amount |
+|---|-------------|--------|
+| {`{for pos in $enumerate(invoice.positions)}`}{`{pos.index + 1}`} | {`{pos.value.description}`} | {`{pos.value.amount}`}{`{end}`} |
+</WordDoc>
+
+## Putting It All Together
+
+Here's a complete invoice template that combines property access, loops, conditionals, and formatting:
+
+<WordDoc filename="Invoice_Template.docx">
+**INVOICE**
+
+  <p>
+    **From:** {`{company.name}`}
+    {`{company.address}`}
+  </p>
+
+  <p>
+    **Bill To:** {`{customer.name}`}
+    {`{customer.address}`}
+  </p>
+
+**Invoice Date:** {`{$formatDate(invoice.date, "MMMM dd, yyyy")}`}<br/>
+**Invoice #:** {`{invoice.number}`}
+
+| # | Description | Qty | Unit Price | Amount |
+|---|-------------|-----|------------|--------|
+| {`{for item in $enumerate(invoice.items)}`}{`{item.index + 1}`} | {`{item.value.description}`} | {`{item.value.quantity}`} | {`{$formatNumber(item.value.unitPrice, "0.00")}`} | {`{$formatNumber(item.value.quantity * item.value.unitPrice, "0.00")}`}{`{end}`} |
+
+**Subtotal:** {`{$formatNumber(invoice.subtotal, "#,##0.00")}`}<br/>
+{`{if invoice.discount > 0}`}**Discount:** -{`{$formatNumber(invoice.discount, "#,##0.00")}`}<br/>{`{end}`}
+**Total:** {`{$formatNumber(invoice.total, "#,##0.00")}`}
+
+{`{if invoice.notes}`}**Notes:** {`{invoice.notes}`}{`{end}`}
+</WordDoc>
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+val data = mapOf(
+    "company" to mapOf(
+        "name" to "Acme Corp",
+        "address" to "123 Business Ave, Suite 100"
+    ),
+    "customer" to mapOf(
+        "name" to "John Smith",
+        "address" to "456 Customer Lane"
+    ),
+    "invoice" to mapOf(
+        "number" to "INV-2024-001",
+        "date" to LocalDate.of(2024, 3, 15),
+        "items" to listOf(
+            mapOf("description" to "Web Development", "quantity" to 40, "unitPrice" to 150.00),
+            mapOf("description" to "UI Design", "quantity" to 20, "unitPrice" to 125.00),
+            mapOf("description" to "Hosting (Annual)", "quantity" to 1, "unitPrice" to 299.99)
+        ),
+        "subtotal" to 8799.99,
+        "discount" to 500.00,
+        "total" to 8299.99,
+        "notes" to "Payment due within 30 days. Thank you for your business!"
+    )
+)
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+Map<String, Object> data = Map.of(
+    "company", Map.of(
+        "name", "Acme Corp",
+        "address", "123 Business Ave, Suite 100"
+    ),
+    "customer", Map.of(
+        "name", "John Smith",
+        "address", "456 Customer Lane"
+    ),
+    "invoice", Map.of(
+        "number", "INV-2024-001",
+        "date", LocalDate.of(2024, 3, 15),
+        "items", List.of(
+            Map.of("description", "Web Development", "quantity", 40, "unitPrice", 150.00),
+            Map.of("description", "UI Design", "quantity", 20, "unitPrice", 125.00),
+            Map.of("description", "Hosting (Annual)", "quantity", 1, "unitPrice", 299.99)
+        ),
+        "subtotal", 8799.99,
+        "discount", 500.00,
+        "total", 8299.99,
+        "notes", "Payment due within 30 days. Thank you for your business!"
+    )
+);
+```
+
+  </TabItem>
+</Tabs>
+
+<WordDoc filename="Invoice_Output.docx">
+**INVOICE**
+
+**From:** Acme Corp<br/>
+123 Business Ave, Suite 100
+
+**Bill To:** John Smith<br/>
+456 Customer Lane
+
+**Invoice Date:** March 15, 2024<br/>
+**Invoice #:** INV-2024-001
+
+| # | Description | Qty | Unit Price | Amount |
+|---|-------------|-----|------------|--------|
+| 1 | Web Development | 40 | $150.00 | $6,000.00 |
+| 2 | UI Design | 20 | $125.00 | $2,500.00 |
+| 3 | Hosting (Annual) | 1 | $299.99 | $299.99 |
+
+**Subtotal:** $8,799.99<br/>
+**Discount:** -$500.00<br/>
+**Total:** $8,299.99
+
+**Notes:** Payment due within 30 days. Thank you for your business!
+</WordDoc>

@@ -1,0 +1,237 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Navbar title styling */
+.navbar__title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--ifm-color-primary)
+  /* letter-spacing: -0.02em; */
+  /* background: linear-gradient(135deg, #2563eb, #7c3aed); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+}
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Code Block with Language Tabs - Placeholder Styles
+   ========================================================================== */
+
+/* Tab list container (the row of language tabs) */
+.tabs {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: 0;
+  gap: 0;
+}
+
+/* Individual tab buttons */
+.tabs__item {
+  background: transparent;
+  border: none;
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+/* Tab hover state */
+.tabs__item:hover {
+  background: rgba(0, 0, 0, 0.03);
+  color: #444;
+}
+
+/* Active/selected tab */
+.tabs__item--active {
+  background: transparent;
+  border-bottom: 2px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+/* Tab content panel (wraps the code block) */
+.tabs-container {
+  /* border: 1px solid #e0e0e0; */
+  /* border-radius: 0 0 8px 8px; */
+  /* overflow: hidden; */
+}
+
+@layer docusaurus.infima {
+  .tabs-container .margin-top--md {
+    margin-top: 0 !important;
+  }
+
+  [data-theme='dark'] {
+    --ifm-pre-background: #1e1e1e;
+  }
+
+  code {
+    border-width: 1px;
+  }
+}
+
+/* Code block container */
+.codeBlockContainer_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Container-styles-module {
+  /* margin: 0 !important; */
+  /* border-radius: 0 !important; */
+}
+
+/* Alternative: target via attribute selector for cleaner approach */
+div[class*='codeBlockContainer'] {
+  /* margin: 0; */
+  /* border-radius: 0 0 8px 8px; */
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  box-shadow: none;
+}
+
+/* Code block title bar (shows filename/language) */
+div[class*='codeBlockTitle'] {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #666;
+  font-weight: normal;
+}
+
+/* The actual code content area */
+div[class*='codeBlockContent'] {
+  /* background-color: #1e1e1e; */
+}
+
+/* Code block with title - add border to content */
+div[class*='codeBlockTitle'] + div[class*='codeBlockContent'] {
+  border: 1px solid #e0e0e0;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+}
+
+/* Code block without title - add full border and proper rounding */
+div[class*='codeBlockContainer'] > div[class*='codeBlockContent']:first-child {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Code blocks inside tabs container - remove top rounding to connect with tabs */
+.tabs-container div[class*='codeBlockContainer'] > div[class*='codeBlockContent']:first-child {
+  border-radius: 0 0 6px 6px;
+  border-top: none;
+}
+
+/* Ensure tabs connect seamlessly with code block below */
+.tabs-container .tabs {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Code blocks with title inside tabs - remove top rounding and border from title bar */
+.tabs-container div[class*='codeBlockTitle'] {
+  border-radius: 0;
+  border-top: none;
+}
+
+/* Code lines */
+div[class*='codeBlockLines'] {
+  /* padding: 1rem; */
+  /* font-size: 0.9rem; */
+  /* line-height: 1.6; */
+}
+
+/* Copy button */
+button[class*='copyButton'] {
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  /* border-radius: 4px; */
+  /* opacity: 0; */
+  /* transition: opacity 0.2s; */
+}
+
+div[class*='codeBlockContainer']:hover button[class*='copyButton'] {
+  /* opacity: 1; */
+}
+
+/* Language label in code block */
+div[class*='codeBlockTitle'] span {
+  /* text-transform: uppercase; */
+  /* letter-spacing: 0.05em; */
+}
+
+/* ==========================================================================
+   Dark Mode Overrides for Code Tabs
+   ========================================================================== */
+
+[data-theme='dark'] .tabs {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+[data-theme='dark'] .tabs__item {
+  color: #9ca3af;
+}
+
+[data-theme='dark'] .tabs__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #d1d5db;
+}
+
+[data-theme='dark'] .tabs__item--active {
+  color: var(--ifm-color-primary);
+}
+
+[data-theme='dark'] .tabs-container {
+  /* border-color: #333; */
+}
+
+/* Dark mode for code block title */
+[data-theme='dark'] div[class*='codeBlockTitle'] {
+  background: #1f2937;
+  border-color: #374151;
+  color: #9ca3af;
+}
+
+[data-theme='dark'] div[class*='codeBlockTitle'] + div[class*='codeBlockContent'] {
+  border-color: #374151;
+}
+
+/* Dark mode for code blocks without title */
+[data-theme='dark'] div[class*='codeBlockContainer'] > div[class*='codeBlockContent']:first-child {
+  border-color: #374151;
+}
+
+/* Dark mode tabs bottom border */
+[data-theme='dark'] .tabs-container .tabs {
+  border-bottom-color: #374151;
+}

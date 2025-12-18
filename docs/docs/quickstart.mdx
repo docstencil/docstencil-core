@@ -1,0 +1,155 @@
+---
+sidebar_position: 1
+slug: /
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WordDoc from "@site/src/components/WordDoc";
+
+# Quickstart
+
+## What is DocStencil?
+
+DocStencil is a document templating engine for the JVM that lets you generate Word documents (DOCX) from templates.
+Design your templates in Microsoft Word using simple `{placeholder}` syntax, then render them with your data.
+
+**Features:**
+- **Loops & Conditions** — Render paragraphs, list items, table rows, or table columns conditionally or in a loop
+- **Styling** — Placeholders preserve the original formatting when replaced
+- **Function Calling** — Call any Java class, function, or data structure from within templates
+- **Extensible** — Module system for inserting hyperlinks, comments, and more
+
+## Installation
+
+DocStencil requires **JDK 8** or higher.
+
+<Tabs groupId="build-tool">
+  <TabItem value="maven" label="Maven" default>
+
+```xml
+<dependencies>
+    ...
+    <dependency>
+        <groupId>com.docstencil</groupId>
+        <artifactId>docstencil-core</artifactId>
+        <version>0.1.2</version>
+    </dependency>
+    ...
+</dependencies>
+```
+
+  </TabItem>
+  <TabItem value="gradle-kotlin" label="Gradle (Kotlin)">
+
+```kotlin
+dependencies {
+    ...
+    implementation("com.docstencil:docstencil-core:0.1.2")
+    ...
+}
+```
+
+  </TabItem>
+  <TabItem value="gradle-groovy" label="Gradle (Groovy)">
+
+```groovy
+dependencies {
+    ...
+    implementation 'com.docstencil:docstencil-core:0.1.2'
+    ...
+}
+```
+
+  </TabItem>
+</Tabs>
+
+## Your First Template
+
+Create a new Word document with placeholders:
+
+<WordDoc filename="Template.docx" downloadUrl="/downloads/quickstart/Template.docx">
+  <div style={{textAlign: 'right'}}>{`{$format(date)}`}</div>
+  <br/>
+
+  Dear <em>Mr. {`{firstName}`} {`{generateLastName(firstName)}`}</em>,
+
+  ...
+</WordDoc>
+
+Then pass your data as a map and render the template:
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+import com.docstencil.core.api.OfficeTemplate
+import java.time.LocalDate
+
+fun main() {
+    // Load template
+    val template = OfficeTemplate.fromFile("Template.docx")
+
+    // Render with data
+    val data = mapOf(
+        "date" to LocalDate.now(),
+        "firstName" to "Björn",
+        "generateLastName" to { firstName: String -> firstName + "son" }
+    )
+    val result = template.render(data)
+
+    // Save output
+    result.writeToFile("Output.docx")
+}
+```
+
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+import com.docstencil.core.api.OfficeTemplate;
+import com.docstencil.core.api.OfficeTemplateResult;
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.function.Function;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Load template
+        OfficeTemplate template = OfficeTemplate.fromFile("Template.docx");
+
+        // Render with data
+        Function<String, String> generateLastName = firstName -> firstName + "son";
+        Map<String, Object> data = Map.of(
+            "date", LocalDate.now(),
+            "firstName", "Björn",
+            "generateLastName", generateLastName
+        );
+        OfficeTemplateResult result = template.render(data);
+
+        // Save output
+        result.writeToFile("Output.docx");
+    }
+}
+```
+
+  </TabItem>
+</Tabs>
+
+The output file contains all evaluated expressions in place of the placeholders, preserving the original styles and formatting:
+
+<WordDoc filename="Output.docx">
+  <div style={{textAlign: 'right'}}>2025/12/17</div>
+  <br/>
+
+  Dear <em>Mr. Björn Björnson</em>,
+
+  ...
+</WordDoc>
+
+Any errors encountered during rendering are reported as comments in the output file.
+
+## Next Steps
+
+Now that you've generated your first template, learn about accessing data in Java classes, loops, and conditionals in the [Basics](./basics) guide.
