@@ -6,7 +6,7 @@ import com.docstencil.core.render.*
 import com.docstencil.core.scanner.*
 
 
-class OfficeFileTemplate(
+internal class OfficeFileTemplate(
     private val xmlContent: String,
     private val globals: Globals,
     private val fileTypeConfig: FileTypeConfig,

@@ -5,6 +5,13 @@ import java.util.*
 import java.util.zip.Deflater
 
 
+/**
+ * Configuration options for template processing.
+ *
+ * Use the default constructor for Kotlin or the [Builder] for Java.
+ *
+ * @see OfficeTemplate
+ */
 data class OfficeTemplateOptions(
     /**
      * Delimiters for placeholders (default: { and }).
@@ -44,6 +51,12 @@ data class OfficeTemplateOptions(
      */
     val modules: List<TemplateModule> = emptyList(),
 ) {
+    /**
+     * Defines the opening and closing delimiters for template expressions.
+     *
+     * @property open The opening delimiter (default: "{").
+     * @property close The closing delimiter (default: "}").
+     */
     data class Delimiters(
         val open: String = "{",
         val close: String = "}",

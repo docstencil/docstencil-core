@@ -33,10 +33,20 @@ class OfficeTemplateResult(val bytes: ByteArray, val errors: List<TemplaterExcep
         return bytes
     }
 
+    /**
+     * Writes the document to a file at the given path.
+     *
+     * @param path The file path to write to.
+     */
     fun writeToFile(path: String) {
         writeToFile(Paths.get(path))
     }
 
+    /**
+     * Writes the document to a file at the given [Path].
+     *
+     * @param path The file path to write to.
+     */
     fun writeToFile(path: Path) {
         Files.write(
             path,
