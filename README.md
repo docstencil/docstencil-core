@@ -8,6 +8,7 @@
 
 <p align="center">
   <a href="https://central.sonatype.com/artifact/com.docstencil/docstencil-core"><img src="https://img.shields.io/maven-central/v/com.docstencil/docstencil-core" alt="Maven Central"></a>
+  <img src="https://img.shields.io/badge/Java-8%2B-orange" alt="Java 8+">
   <a href="docstencil-core/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0%20%2F%20MIT-blue.svg" alt="License"></a>
 </p>
 
