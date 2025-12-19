@@ -1,0 +1,183 @@
+---
+sidebar_position: 10
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import WordDoc from "@site/src/components/WordDoc";
+
+# Template Options
+
+Configuring template rendering behavior with `OfficeTemplateOptions`.
+
+## Parallel Processing
+
+Enable parallel execution for `{for}` loops and `$map` operations:
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+val options = OfficeTemplateOptions()
+    .parallel(true)
+
+val template = OfficeTemplate.fromFile("Template.docx", options)
+```
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+OfficeTemplateOptions options = new OfficeTemplateOptions()
+    .parallel(true);
+
+OfficeTemplate template = OfficeTemplate.fromFile("Template.docx", options);
+```
+
+  </TabItem>
+</Tabs>
+
+### Performance Benefits
+
+Parallel mode can significantly speed up rendering when you encounter performance bottlenecks while evaluating template expressions.
+
+This might happen for large audit reports that pull in data from a dozen data sources.
+
+### Thread Safety Requirement
+
+When using parallel mode, all objects in your data map must be thread-safe:
+
+- **Immutable objects** — Safe by default (data classes, records, strings, numbers)
+- **Read-only access** — Safe if you only read properties
+- **Mutable shared state** — Must use synchronization or thread-safe collections
+
+```kotlin
+// Safe: immutable data class
+data class Product(val name: String, val price: Double)
+
+// Safe: read-only list
+val products: List<Product> = listOf(...)
+
+// Unsafe: mutable list being modified during iteration
+val results = mutableListOf<String>()  // Don't share this in parallel mode
+```
+
+If your data objects have side effects or mutable state, keep parallel mode disabled (the default).
+
+## Custom Delimiters
+
+By default, DocStencil uses `{` and `}` as delimiters for template expressions. If your documents already contain curly braces for other purposes, you can customize the delimiters:
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+val options = OfficeTemplateOptions(
+    delimiters = OfficeTemplateOptions.Delimiters("<<", ">>")
+)
+
+val template = OfficeTemplate.fromFile("Template.docx", options)
+```
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+OfficeTemplateOptions options = new OfficeTemplateOptions.Builder()
+    .delimiters(new OfficeTemplateOptions.Delimiters("<<", ">>"))
+    .build();
+
+OfficeTemplate template = OfficeTemplate.fromFile("Template.docx", options);
+```
+
+  </TabItem>
+</Tabs>
+
+With custom delimiters, your template would use `<<name>>` instead of `{name}`.
+
+## Locale
+
+The `locale` option controls how builtin formatting functions behave. This affects date formatting, number formatting, and other locale-sensitive operations:
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+val options = OfficeTemplateOptions(
+    locale = Locale.GERMANY
+)
+
+val template = OfficeTemplate.fromFile("Template.docx", options)
+```
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+OfficeTemplateOptions options = new OfficeTemplateOptions.Builder()
+    .locale(Locale.GERMANY)
+    .build();
+
+OfficeTemplate template = OfficeTemplate.fromFile("Template.docx", options);
+```
+
+  </TabItem>
+</Tabs>
+
+By default, DocStencil uses `Locale.getDefault()` from the JVM.
+
+## Strip Invalid XML Characters
+
+Office documents use XML internally. If your data contains characters that are invalid in XML (such as certain control characters), rendering will fail. Enable `stripInvalidXmlChars` to automatically remove these characters:
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+val options = OfficeTemplateOptions(
+    stripInvalidXmlChars = true
+)
+
+val template = OfficeTemplate.fromFile("Template.docx", options)
+```
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+OfficeTemplateOptions options = new OfficeTemplateOptions.Builder()
+    .stripInvalidXmlChars(true)
+    .build();
+
+OfficeTemplate template = OfficeTemplate.fromFile("Template.docx", options);
+```
+
+  </TabItem>
+</Tabs>
+
+This is useful when processing data from external sources that may contain unexpected characters. The default is `false`.
+
+## Exception Stack Traces
+
+By default, DocStencil prints stack traces when exceptions occur during parsing or rendering. You can disable this for cleaner error output in production:
+
+<Tabs groupId="language">
+  <TabItem value="kotlin" label="Kotlin" default>
+
+```kotlin
+val options = OfficeTemplateOptions(
+    printExceptionStackTraces = false
+)
+
+val template = OfficeTemplate.fromFile("Template.docx", options)
+```
+  </TabItem>
+  <TabItem value="java" label="Java">
+
+```java
+OfficeTemplateOptions options = new OfficeTemplateOptions.Builder()
+    .printExceptionStackTraces(false)
+    .build();
+
+OfficeTemplate template = OfficeTemplate.fromFile("Template.docx", options);
+```
+
+  </TabItem>
+</Tabs>
+
+When disabled, exceptions are still thrown but without printing the full stack trace to stderr. The default is `true`.

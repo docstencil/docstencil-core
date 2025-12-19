@@ -50,7 +50,7 @@ DocStencil focuses on simplicity: you design templates in Word, not in code. Com
 - **Preserves Styles**: Your Word styles, fonts, and layouts stay intact
 - **Parallel Evaluation**: Template expressions can be evaluated in parallel; ideal for large templates that fetch data lazily
 
-## Quick Start
+## Quickstart
 
 ### Requirements
 

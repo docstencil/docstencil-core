@@ -378,14 +378,14 @@ class RendererTest {
     }
 
     @Test
-    fun `visitLogicalExpr should treat empty string as truthy`() {
+    fun `visitLogicalExpr should treat empty string as falsy`() {
         val left = LiteralExpr("")
         val right = LiteralExpr("fallback")
         val operator = createToken(TemplateTokenType.OR, "or")
         val expr = LogicalExpr(left, operator, right)
         val (interpreter, env) = createInterpreterWithEnv()
         val result = interpreter.visitLogicalExpr(expr, env)
-        assertEquals("", result)
+        assertEquals("fallback", result)
     }
 
     @Test
@@ -530,7 +530,7 @@ class RendererTest {
         val (interpreter, env) = createInterpreterWithEnv()
         val result = interpreter.visitCaseExpr(expr, env)
 
-        assertEquals("zero", result)
+        assertEquals("string", result)
     }
 
     @Test

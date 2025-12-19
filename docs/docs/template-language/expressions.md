@@ -19,13 +19,26 @@ Output literal values directly:
 {null}            // Null
 ```
 
+### Quotes & String Escaping
+
+There are four different double quote characters recognized by the templating language: `"`, `”`, `„`, `“`
+
+All four double quote characters can be mixed and matched when defining string literals.
+
+```
+{„My start and end quotes are different.“}  // "My start and end quotes are different."
+{„He said \"Escape the quotes!\"“}          // 'He said "Escape the quotes!"'
+```
+
 ## Variables
 
-Reference variables from your data:
+Reference variables from your data, define new ones, or assign existing ones:
 
 ```
 {name}
 {invoice.total}
+{var totalWithTax = invoice.total * 1.2}
+{do invoice.total = totalWithTax} // This works for mutable properties or properties with setters.
 ```
 
 ## Property Access

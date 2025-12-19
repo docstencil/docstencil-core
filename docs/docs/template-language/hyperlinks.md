@@ -8,10 +8,10 @@ Inserting clickable links into documents.
 
 ## Basic Syntax
 
-Use `{insert $link(url)}...{end}` to create a hyperlink:
+Use `{rewrite $link(url)}...{end}` to create a hyperlink:
 
 ```
-{insert $link("https://example.com")}Click here{end}
+{rewrite $link("https://example.com")}Click here{end}
 ```
 
 ## Dynamic URLs
@@ -19,7 +19,7 @@ Use `{insert $link(url)}...{end}` to create a hyperlink:
 Use variables for the URL:
 
 ```
-{insert $link(product.url)}{product.name}{end}
+{rewrite $link(product.url)}{product.name}{end}
 ```
 
 ## URL Types
@@ -27,25 +27,15 @@ Use variables for the URL:
 Hyperlinks work with various URL schemes:
 
 ```
-{insert $link("https://example.com")}Website{end}
-{insert $link("mailto:contact@example.com")}Email us{end}
-{insert $link("tel:+1234567890")}Call us{end}
+{rewrite $link("https://example.com")}Website{end}
+{rewrite $link("mailto:contact@example.com")}Email us{end}
+{rewrite $link("tel:+1234567890")}Call us{end}
 ```
 
 ## Link Text Formatting
 
-The text between `{insert ...}` and `{end}` can include formatting and expressions:
+The text between `{rewrite ...}` and `{end}` can include formatting and expressions:
 
 ```
-{insert $link(user.profileUrl)}View {user.name}'s profile{end}
-```
-
-## Links in Loops
-
-Generate multiple links from data:
-
-```
-{for link in navigation}
-{insert $link(link.url)}{link.title}{end}
-{end}
+{rewrite $link(user.profileUrl)}View {user.name}'s profile{end}
 ```

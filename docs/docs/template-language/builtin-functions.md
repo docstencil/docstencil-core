@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Built-in Functions
 
-Reference for all `$`-prefixed built-in functions.
+DocStencil provides many builtin functions for common tasks. All builtin functions are `$`-prefixed.
 
 ## Formatting
 
