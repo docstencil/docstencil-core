@@ -13,7 +13,7 @@ import WordDoc from "@site/src/components/WordDoc";
 ## What is DocStencil?
 
 DocStencil is a document templating engine for the JVM that lets you generate Word documents (DOCX) from templates.
-Design your templates in Microsoft Word using simple `{placeholder}` syntax, then render them with your data.
+Design your templates as plain DOCX files in Microsoft Word using simple `{placeholder}` syntax, then render them with your data.
 
 **Features:**
 - **Loops & Conditions** — Render paragraphs, list items, table rows, or table columns conditionally or in a loop
@@ -67,7 +67,7 @@ dependencies {
 
 ## Your First Template
 
-Create a new Word document with placeholders:
+Create a new plain DOCX file with placeholders:
 
 <WordDoc filename="Template.docx" downloadUrl="/downloads/quickstart/Template.docx">
   <div style={{textAlign: 'right'}}>{`{$format(date)}`}</div>

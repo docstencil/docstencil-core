@@ -16,7 +16,7 @@ Describe how you'd like DocStencil to solve this problem.
 
 If your feature is directly related to templating capabilities, you can add example template expression you would like to use.
 
-Example: I would like to include the footer of another document by writing `{include footer("Other_File.docx")}` into the footer of my main template.
+Example: I would like to include the footer of another document by writing `{include footer("Other_File.docx")}` into the footer of my main docx file.
 
 ## Use Case
 

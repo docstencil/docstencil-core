@@ -10,7 +10,7 @@ assignees: ''
 
 A clear description of the bug.
 
-If possible, attach a minimal `.docx` template that reproduces the issue.
+If possible, attach a minimal `.docx` file that reproduces the issue.
 
 ## Expected Behavior
 
