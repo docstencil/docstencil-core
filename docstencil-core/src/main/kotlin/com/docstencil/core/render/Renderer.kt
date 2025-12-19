@@ -473,6 +473,15 @@ class Renderer(
             if (bool is Boolean && !bool) {
                 return false
             }
+            if (bool == "") {
+                return false
+            }
+            if (bool == 0 || bool == 0.0) {
+                return false
+            }
+            if (bool is Collection<*> && bool.isEmpty()) {
+                return false
+            }
 
             return true
         }

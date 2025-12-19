@@ -32,7 +32,7 @@ Assign values to object properties:
 
 ```
 {do person.nickname = "Bob"}
-{do settings["theme"] = "dark"}
+{do settings.theme = "dark"}
 ```
 
 This works with:

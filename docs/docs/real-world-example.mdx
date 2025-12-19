@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # Real-World Example
 
-This page walks through a complete invoice template that demonstrates many of DocStencil's features.
+This page walks through an invoice template that demonstrates many of DocStencil's features.
 
 ## The Scenario
 
@@ -16,7 +16,7 @@ A freelancer needs to generate invoices for clients. Each invoice includes:
 - Freelancer and customer addresses
 - Multiple line items in a table
 - Automatic calculation of subtotal, VAT, and total
-- Formatted dates
+- Formatted dates and numbers
 
 ## The Template
 
@@ -24,7 +24,7 @@ A freelancer needs to generate invoices for clients. Each invoice includes:
 
 ## Features Demonstrated
 
-This template showcases several advanced DocStencil features:
+This template showcases several DocStencil features:
 
 ### Nested Property Access
 Access deeply nested data using dot notation:
@@ -46,6 +46,12 @@ Chain multiple functions together using the pipe operator `|`:
 {total | $format("0")}
 ```
 The pipe operator adds the expression on the left side of the pipe as the first argument to the function call on the right.
+The following two expressions are equivalent:
+
+```
+{total | $format("0")}
+{$format(total, "0")}
+```
 
 ### Lambda Expressions
 Use arrow functions for simple data transformations:
@@ -70,6 +76,7 @@ Repeat table rows for each item in a list:
 ```
 {for pos in invoice.positions}...{end}
 ```
+For loops and if statements automatically wrap table rows if their corresponding `{end}` partner is in a different table cell.
 
 ## The Data
 
@@ -265,6 +272,6 @@ public class InvoiceExample {
 
 ## The Output
 
-With the data above, DocStencil produces a fully rendered invoice with all calculations completed.
-
 **[Download the output (Invoice_Output.docx)](/examples/Invoice_Output.docx)**
+
+The rendered invoice shows all template expressions replaced with actual values. Notice that `{var ...}` statements do not leave empty lines and the original styling is preserved throughout the document.

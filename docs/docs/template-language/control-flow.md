@@ -16,16 +16,6 @@ Premium member benefits apply.
 {end}
 ```
 
-With else:
-
-```
-{if order.shipped}
-Your order is on the way!
-{else}
-Your order is being processed.
-{end}
-```
-
 ## For Loops
 
 Use `{for ... in ...}...{end}` to iterate over collections:
@@ -34,21 +24,6 @@ Use `{for ... in ...}...{end}` to iterate over collections:
 {for item in items}
 - {item.name}: {item.price}
 {end}
-```
-
-### Loop Context
-
-Loops automatically repeat the containing element:
-- **Inline:** Loop repeats within the paragraph
-- **Paragraph:** Loop repeats the entire paragraph
-- **Table row:** Loop repeats the entire row
-
-Table example:
-
-```
-| Name | Price |
-|------|-------|
-| {for item in items}{item.name} | {item.price}{end} |
 ```
 
 ## Case Expressions
@@ -72,12 +47,16 @@ Single-line form:
 
 ## Element Targeting with @
 
-Use `@"tag"` to specify which XML element a loop or conditional should repeat:
+Use `@"tag"` to specify which XML element an `if` or `for` block should wrap:
 
 ```
-{@"w:tc" for cell in row.cells}
-{cell.value}
-{end}
+|----------------------------------------------------------------------|
+| {@"w:tr" for row in rows}{@"w:tc" for cell in row} {cell} {end}{end} |
+|----------------------------------------------------------------------|
 ```
 
-This targets the table cell (`w:tc`) element, useful when the default element detection isn't what you need.
+This example shows a single table cell containing two `for` loops:
+- `@"w:tr"` makes the outer loop repeat the entire table row
+- `@"w:tc"` makes the inner loop repeat each table cell within the row
+
+This is useful when you need to control exactly which XML element gets repeated, rather than relying on automatic detection.

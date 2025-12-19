@@ -30,7 +30,7 @@ Create anonymous functions with arrow syntax:
 
 ## Pipe Chaining
 
-Use the pipe operator `|` to chain function calls. The left side becomes the first argument:
+Use the pipe operator `|` to chain function calls. The left side becomes the first argument of the function call on the right:
 
 ```
 {items | $filter((x) => x.active)}
