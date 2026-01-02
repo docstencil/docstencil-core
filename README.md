@@ -66,7 +66,7 @@ DocStencil focuses on simplicity: you design templates in Word, not in code. Com
 <dependency>
     <groupId>com.docstencil</groupId>
     <artifactId>docstencil-core</artifactId>
-    <version>0.1.6</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
@@ -76,7 +76,7 @@ DocStencil focuses on simplicity: you design templates in Word, not in code. Com
 <summary><b>Gradle (Kotlin)</b></summary>
 
 ```kotlin
-implementation("com.docstencil:docstencil-core:0.1.6")
+implementation("com.docstencil:docstencil-core:0.2.0")
 ```
 
 </details>
@@ -85,7 +85,7 @@ implementation("com.docstencil:docstencil-core:0.1.6")
 <summary><b>Gradle (Groovy)</b></summary>
 
 ```groovy
-implementation 'com.docstencil:docstencil-core:0.1.6'
+implementation 'com.docstencil:docstencil-core:0.2.0'
 ```
 
 </details>

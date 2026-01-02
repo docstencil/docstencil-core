@@ -24,7 +24,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     // DocStencil - document templating
-    implementation("com.docstencil:docstencil-core:0.1.6")
+    implementation("com.docstencil:docstencil-core:0.2.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
