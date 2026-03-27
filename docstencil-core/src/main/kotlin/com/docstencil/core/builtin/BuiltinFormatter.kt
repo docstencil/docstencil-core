@@ -69,6 +69,19 @@ class BuiltinFormatter(private val locale: Locale) {
         return decimalFormat.format(number)
     }
 
+    fun formatCurrency(number: Number?, code: String?): String {
+        if (number == null) {
+            return ""
+        }
+
+        val formatter = NumberFormat.getCurrencyInstance(locale);
+        if (code != null) {
+            formatter.setCurrency(Currency.getInstance(code));
+        }
+
+        return formatter.format(number);
+    }
+
     private fun formatLocalDateTime(date: LocalDateTime, pattern: String): String {
         val formatter = DateTimeFormatter.ofPattern(pattern, locale)
         return date.format(formatter)
