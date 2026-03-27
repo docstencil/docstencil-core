@@ -505,7 +505,7 @@ class BasicE2ETest {
         val data = mapOf(
             "invoice" to Invoice02Invoice(
                 invoiceNumber = "INV-1234",
-                invoiceDate = LocalDate.now(),
+                invoiceDate = LocalDate.of(2026, 1, 2),
                 company = Invoice02Company("Acme Corp", "123 Business Ave, New York, NY", "First National Bank", "1234567890"),
                 customer = Invoice02Customer("John Smith", "john@example.com"),
                 items = listOf(
