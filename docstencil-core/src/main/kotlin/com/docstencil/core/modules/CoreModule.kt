@@ -64,6 +64,10 @@ class CoreModule : TemplateModule {
                 { num: Number?, pattern: String -> formatter.formatNumber(num, pattern) },
             )
             .registerGlobal(
+                $$"$formatCurrency",
+                { num: Number?, code: String? -> formatter.formatCurrency(num, code) },
+            )
+            .registerGlobal(
                 $$"$join",
                 { iter: Iterable<Any?>, sep: String ->
                     iter.joinToString(sep) { Objects.toString(it) }
