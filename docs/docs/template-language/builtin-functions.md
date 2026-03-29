@@ -37,6 +37,16 @@ Format numbers explicitly:
 {$formatNumber(price, "#,##0.00")}
 ```
 
+### $formatCurrency
+
+Format a number as a currency based on its ISO 4217 code for the active locale.
+
+```
+{$formatCurrency(price, "USD")}
+{$formatCurrency(price, "EUR")}
+{$formatCurrency(price, "AUD")}
+```
+
 ## Collections
 
 ### $filter
