@@ -6,10 +6,11 @@ import com.docstencil.core.helper.*
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.Locale
 import kotlin.test.Test
 
 class BasicE2ETest {
-    private val options = OfficeTemplateOptions()
+    private val options = OfficeTemplateOptions(locale = Locale.UK)
 
     @Test
     fun `should render formatted placeholders`() {
