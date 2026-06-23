@@ -14,12 +14,12 @@ Inserting images into documents using the docstencil-docx-pro module.
 
 ```java
 OfficeTemplateOptions options = new OfficeTemplateOptions()
-    .withModule(new ImageModule());
+    .addModule(new ImageModule());
 ```
 
 ```kotlin
 val options = OfficeTemplateOptions()
-    .withModule(ImageModule())
+    .addModule(ImageModule())
 ```
 
 ## Inline Images
@@ -42,37 +42,63 @@ Use `$imageBlock` to insert a standalone image on its own line:
 
 ## Image Data Sources
 
-Provide image data in your template context:
+The argument to `$image` / `$imageBlock` is either a raw byte array
+(`byte[]` / `ByteArray`) or a `TemplateImage` (see [Sizing](#sizing) below).
+DocStencil does not load files or URLs for you — read the bytes yourself and
+put them in your template context:
 
 ```kotlin
 val data = mapOf(
-    "photo" to File("photo.jpg").readBytes(),           // byte array
-    "logo" to ImageModule.fromFile("logo.png"),         // from file path
-    "chart" to ImageModule.fromUrl("https://...")       // from URL
+    "photo" to File("photo.jpg").readBytes()
 )
 ```
 
 ```java
 Map<String, Object> data = Map.of(
-    "photo", Files.readAllBytes(Path.of("photo.jpg")),  // byte array
-    "logo", ImageModule.fromFile("logo.png"),           // from file path
-    "chart", ImageModule.fromUrl("https://...")         // from URL
+    "photo", Files.readAllBytes(Path.of("photo.jpg"))
 );
 ```
 
+When you pass raw bytes, the image dimensions are detected automatically (and
+capped at 640px wide). To use a remote image, fetch its bytes with your HTTP
+client of choice and pass the resulting `byte[]`.
+
 ## Sizing
 
-Specify dimensions with the image data:
+To control dimensions, wrap the bytes in a `TemplateImage` using
+`TemplateImage.create(...)` instead of passing raw bytes. `TemplateImage` lives
+in `com.docstencil.docx.pro.modules.image.model`.
 
 ```kotlin
 val data = mapOf(
-    "photo" to ImageModule.fromFile("photo.jpg")
-        .withWidth(200)      // width in pixels
-        .withHeight(150)     // height in pixels
+    "photo" to TemplateImage.create(
+        File("photo.jpg").readBytes(),
+        widthPx = 200,   // width in pixels
+        heightPx = 150,  // height in pixels
+    )
 )
 ```
 
-If only one dimension is specified, the other scales proportionally to preserve aspect ratio.
+```java
+Map<String, Object> data = Map.of(
+    "photo", TemplateImage.create(
+        Files.readAllBytes(Path.of("photo.jpg")),
+        200,   // width in pixels
+        150    // height in pixels
+    )
+);
+```
+
+If only one dimension is specified, the other scales proportionally to preserve
+aspect ratio. To set the width only, pass just `widthPx` (Kotlin) or call
+`TemplateImage.create(bytes, 200)` (Java). To set the height only, pass `null`
+for the width — `TemplateImage.create(bytes, null, 150)`.
+
+:::note
+`create` also accepts an optional fourth argument, `maxWidthPx`, which caps the
+rendered width (default `640`). Both Kotlin and Java can omit any trailing
+arguments they don't need.
+:::
 
 ## Conditional Images
 

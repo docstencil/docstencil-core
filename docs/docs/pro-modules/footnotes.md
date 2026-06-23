@@ -14,12 +14,12 @@ Adding footnotes to documents using the docstencil-docx-pro module.
 
 ```java
 OfficeTemplateOptions options = new OfficeTemplateOptions()
-    .withModule(new FootnoteModule());
+    .addModule(new FootnoteModule());
 ```
 
 ```kotlin
 val options = OfficeTemplateOptions()
-    .withModule(FootnoteModule())
+    .addModule(FootnoteModule())
 ```
 
 ## Basic Syntax

@@ -14,12 +14,12 @@ Adding endnotes to documents using the docstencil-docx-pro module.
 
 ```java
 OfficeTemplateOptions options = new OfficeTemplateOptions()
-    .withModule(new EndnoteModule());
+    .addModule(new EndnoteModule());
 ```
 
 ```kotlin
 val options = OfficeTemplateOptions()
-    .withModule(EndnoteModule())
+    .addModule(EndnoteModule())
 ```
 
 ## Basic Syntax
@@ -64,6 +64,6 @@ You can use both footnotes and endnotes in the same document by adding both modu
 
 ```java
 OfficeTemplateOptions options = new OfficeTemplateOptions()
-    .withModule(new FootnoteModule())
-    .withModule(new EndnoteModule());
+    .addModule(new FootnoteModule())
+    .addModule(new EndnoteModule());
 ```
