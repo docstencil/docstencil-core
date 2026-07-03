@@ -14,3 +14,7 @@ Step-by-step tutorials for common DocStencil use cases.
 
 
 - **[Invoice Generation](./invoice-generation)**: Complete invoice system with line items, calculations, conditional sections, and professional formatting.
+
+## Reference
+
+- **[Performance](./performance)**: Measured rendering throughput for representative templates, how performance scales, and how to reproduce the benchmarks.
