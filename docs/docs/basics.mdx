@@ -163,15 +163,9 @@ Here's a complete invoice template that combines property access, loops, conditi
 <WordDoc filename="Invoice_Template.docx">
 **INVOICE**
 
-  <p>
-    **From:** {`{company.name}`}
-    {`{company.address}`}
-  </p>
+**From:** {`{company.name}`}<br/>{`{company.address}`}
 
-  <p>
-    **Bill To:** {`{customer.name}`}
-    {`{customer.address}`}
-  </p>
+**Bill To:** {`{customer.name}`}<br/>{`{customer.address}`}
 
 **Invoice Date:** {`{$formatDate(invoice.date, "MMMM dd, yyyy")}`}<br/>
 **Invoice #:** {`{invoice.number}`}
