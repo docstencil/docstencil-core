@@ -1,0 +1,9 @@
+{
+  "name": "docstencil-docs",
+  "compatibility_date": "2026-11-06",
+  "assets": {
+    "directory": "./build",
+    // Without this, an unknown path returns a 404 with an empty body.
+    "not_found_handling": "404-page"
+  }
+}

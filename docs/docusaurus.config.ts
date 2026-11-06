@@ -16,6 +16,9 @@ const config: Config = {
 
   // Set the production url of your site here
   url: 'https://docstencil.com',
+  // Cloudflare serves a page at its URL without a trailing slash only when the build writes page.html.
+  // With page/index.html, Cloudflare redirects every such URL to the form with the slash.
+  trailingSlash: false,
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
