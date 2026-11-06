@@ -26,7 +26,7 @@ This command generates static content into the `build` directory and can be serv
 
 ## Deployment
 
-The site runs on Cloudflare as the static Worker `docstencil-docs`, configured in `wrangler.jsonc`. Cloudflare builds and deploys it after each push to `main` that changes this folder.
+The site deploys to Cloudflare as the static Worker `docstencil-docs`, configured in `wrangler.jsonc`. Cloudflare builds and deploys it after each push to `main` that changes this folder.
 
 To deploy by hand:
 
