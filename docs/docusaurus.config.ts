@@ -112,11 +112,11 @@ const config: Config = {
             },
             {
               label: 'Template language',
-              href: '/docs/pro-modules/images',
+              to: '/docs/template-language/control-flow',
             },
             {
               label: 'DocStencil Pro',
-              href: '/docs/template-language/control-flow',
+              to: '/docs/pro-modules/images',
             },
           ],
         },
@@ -160,7 +160,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Alexander Dür, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Data Driven Solutions e.U. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.vsLight,
